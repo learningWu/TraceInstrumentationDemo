@@ -4,3 +4,11 @@
 
 # 可以将某个package加入白名单中
 #-keeppackage com/sample/systrace/
+
+
+# 设置了只需关注，就不管其它类，若没有设置，照常使用
+# 只需关注的 class
+#-focusclass com/sample/systrace/TestIgnoreFile
+
+# 只需关注的 package
+-focuspackage com/qingqing/student

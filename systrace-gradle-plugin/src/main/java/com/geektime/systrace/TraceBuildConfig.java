@@ -37,6 +37,11 @@ public class TraceBuildConfig {
     private final HashSet<String> mBlackClassMap;
     private final HashSet<String> mBlackPackageMap;
 
+    /**
+     * 优先于 mBlackClassMap，mBlackPackageMap
+     */
+    private final HashSet<String> mOnlyFocusMap;
+
     public TraceBuildConfig(String packageName, String mappingPath, String baseMethodMap, String methodMapFile, String ignoreMethodMapFile, String blackListFile) {
         mPackageName = packageName;
         mMappingPath = mappingPath;
@@ -46,6 +51,7 @@ public class TraceBuildConfig {
         mBlackListDir = blackListFile;
         mBlackClassMap = new HashSet();
         mBlackPackageMap = new HashSet();
+        mOnlyFocusMap = new HashSet();
     }
 
     public String getPackageName() {
@@ -80,6 +86,7 @@ public class TraceBuildConfig {
 
     /**
      * whether it need to trace by class filename
+     *
      * @param fileName
      * @return
      */
@@ -101,6 +108,7 @@ public class TraceBuildConfig {
     /**
      * whether it need to trace.
      * if this class in collected set,it return true.
+     *
      * @param clsName
      * @param mappingCollector
      * @return
@@ -109,6 +117,11 @@ public class TraceBuildConfig {
         boolean isNeed = true;
         if (mBlackClassMap.contains(clsName)) {
             isNeed = false;
+        } else if (!mOnlyFocusMap.isEmpty()) {
+            // 有配置只需关注。只关注配置内容
+            if (!mOnlyFocusMap.contains(clsName)){
+                isNeed = false;
+            }
         } else {
             if (null != mappingCollector) {
                 clsName = mappingCollector.originalClassName(clsName, clsName);
@@ -137,6 +150,7 @@ public class TraceBuildConfig {
 
     /**
      * parse the BlackFile in order to pass some class/method
+     *
      * @param processor
      */
     public void parseBlackFile(MappingCollector processor) {
@@ -165,10 +179,18 @@ public class TraceBuildConfig {
                 if (black.startsWith("-keepclass ")) {
                     black = black.replace("-keepclass ", "");
                     mBlackClassMap.add(processor.proguardClassName(black, black));
-
                 } else if (black.startsWith("-keeppackage ")) {
                     black = black.replace("-keeppackage ", "");
                     mBlackPackageMap.add(black);
+                }
+
+                // 只需关注内容
+                if (black.startsWith("-focusclass ")) {
+                    black = black.replace("-focusclass ", "");
+                    mOnlyFocusMap.add(processor.proguardClassName(black, black));
+                } else if (black.startsWith("-focuspackage ")) {
+                    black = black.replace("-focuspackage ", "");
+                    mOnlyFocusMap.add(black);
                 }
 
             }
