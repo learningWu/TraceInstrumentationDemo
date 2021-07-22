@@ -283,9 +283,9 @@ public class MethodCollector {
                 ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
                 ClassVisitor visitor;
                 if (isSingle) {
-                    visitor = new SingleTraceClassAdapter(Opcodes.ASM9, classWriter);
+                    visitor = new SingleTraceClassAdapter(Opcodes.ASM5, classWriter);
                 } else {
-                    visitor = new TraceClassAdapter(Opcodes.ASM9, classWriter);
+                    visitor = new TraceClassAdapter(Opcodes.ASM5, classWriter);
                 }
                 classReader.accept(visitor, 0);
             } catch (Exception e) {
@@ -315,9 +315,9 @@ public class MethodCollector {
                     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
                     ClassVisitor visitor;
                     if (isSingle) {
-                        visitor = new SingleTraceClassAdapter(Opcodes.ASM9, classWriter);
+                        visitor = new SingleTraceClassAdapter(Opcodes.ASM5, classWriter);
                     } else {
-                        visitor = new TraceClassAdapter(Opcodes.ASM9, classWriter);
+                        visitor = new TraceClassAdapter(Opcodes.ASM5, classWriter);
                     }
                     classReader.accept(visitor, 0);
                 }
@@ -414,7 +414,7 @@ public class MethodCollector {
 
         CollectMethodNode(String className, int access, String name, String desc,
                           String signature, String[] exceptions) {
-            super(Opcodes.ASM9, access, name, desc, signature, exceptions);
+            super(Opcodes.ASM5, access, name, desc, signature, exceptions);
             this.className = className;
         }
 
