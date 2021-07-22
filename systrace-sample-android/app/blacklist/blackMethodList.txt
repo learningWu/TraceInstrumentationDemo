@@ -11,4 +11,4 @@
 #-focusclass com/sample/systrace/TestIgnoreFile
 
 # 只需关注的 package
-#-focuspackage com/qingqing/student
+-focuspackage com/qingqing/student
