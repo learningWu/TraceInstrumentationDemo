@@ -31,8 +31,3 @@
 ```
 python $ANDROID_HOME/platform-tools/systrace/systrace.py gfx view wm am pm ss dalvik app sched -b 90960 -a com.sample.systrace  -o test.log.html
 ```
-上面原始脚本有问题，可使用以下
-```
-python C:\Users\wuzixuan\AppData\Local\Android\Sdk\platform-tools\systrace\systrace.py -t 10  gfx view wm am pm ss dalvik app sched -a com.sample.systrace -o test.log.html
-```
-plugin 编译到 mavenLocal，所以需要先编译 systrace-gradle-plugin，再运行案例 systrace-sample-android

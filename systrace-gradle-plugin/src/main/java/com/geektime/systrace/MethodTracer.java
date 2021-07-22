@@ -101,7 +101,6 @@ public class MethodTracer {
                 }
                 changedFileOutput.createNewFile();
 
-                // TODO(wzx) : 控制是否需要改变class文件
                 if (mTraceConfig.isNeedTraceClass(classFile.getName())) {
                     is = new FileInputStream(classFile);
                     ClassReader classReader = new ClassReader(is);
