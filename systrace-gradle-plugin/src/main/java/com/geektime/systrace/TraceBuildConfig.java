@@ -95,8 +95,36 @@ public class TraceBuildConfig {
         } else {
             isNeed = false;
         }
+        if (!isNeed) {
+            Log.w(TAG, "ignore class %s", fileName);
+        }
         return isNeed;
     }
+
+//    /**
+//     * whether it need to trace.
+//     * if this class in collected set,it return true.
+//     * @param clsName
+//     * @param mappingCollector
+//     * @return
+//     */
+//    public boolean isNeedTrace(String clsName, MappingCollector mappingCollector) {
+//        boolean isNeed = true;
+//        if (mBlackClassMap.contains(clsName)) {
+//            isNeed = false;
+//        } else {
+//            if (null != mappingCollector) {
+//                clsName = mappingCollector.originalClassName(clsName, clsName);
+//            }
+//            for (String packageName : mBlackPackageMap) {
+//                if (clsName.startsWith(packageName.replaceAll("/", "."))) {
+//                    isNeed = false;
+//                    break;
+//                }
+//            }
+//        }
+//        return isNeed;
+//    }
 
     /**
      * whether it need to trace.
@@ -106,16 +134,16 @@ public class TraceBuildConfig {
      * @return
      */
     public boolean isNeedTrace(String clsName, MappingCollector mappingCollector) {
-        boolean isNeed = true;
+        boolean isNeed = false;
         if (mBlackClassMap.contains(clsName)) {
-            isNeed = false;
+            isNeed = true;
         } else {
             if (null != mappingCollector) {
                 clsName = mappingCollector.originalClassName(clsName, clsName);
             }
             for (String packageName : mBlackPackageMap) {
                 if (clsName.startsWith(packageName.replaceAll("/", "."))) {
-                    isNeed = false;
+                    isNeed = true;
                     break;
                 }
             }
@@ -143,8 +171,11 @@ public class TraceBuildConfig {
         File blackConfigFile = new File(mBlackListDir);
         if (!blackConfigFile.exists()) {
             Log.w(TAG, "black config file not exist %s", blackConfigFile.getAbsoluteFile());
+        } else {
+            Log.w(TAG, "black config file exist %s", blackConfigFile.getAbsoluteFile());
         }
-        String blackStr = TraceBuildConstants.DEFAULT_BLACK_TRACE + Util.readFileAsString(blackConfigFile.getAbsolutePath());
+//        String blackStr = TraceBuildConstants.DEFAULT_BLACK_TRACE + Util.readFileAsString(blackConfigFile.getAbsolutePath());
+        String blackStr =  Util.readFileAsString(blackConfigFile.getAbsolutePath());
 
         String[] blackArray = blackStr.split("\n");
 
